@@ -1,0 +1,14 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs (if any doc generators are used)
+_site/
+.jekyll-cache/
