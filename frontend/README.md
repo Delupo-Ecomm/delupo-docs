@@ -195,25 +195,40 @@ Tabela de dados com suporte a ordenação.
 
 ### 6. FiltersBar.jsx
 
-Barra de filtros com campos de data e status.
+Barra de filtros com campos de data, status, agrupamento temporal e filtro por UTM.
 
 **Props:**
 - `filters`: Objeto com valores atuais
-- `onFiltersChange`: Callback ao alterar filtros
-- `statusOptions`: Array de opções de status
+- `onChange`: Callback ao alterar filtros
+- `showStatus`: Exibir opções de status (padrão: true)
+- `showGroupBy`: Exibir controles de agrupamento temporal (padrão: false)
+- `utmSources`: Array de UTM sources disponíveis para filtro (padrão: [])
 
 **Uso:**
 
 ```jsx
+// Dashboard de pedidos com agrupamento e filtro UTM
 <FiltersBar 
   filters={orderFilters}
-  onFiltersChange={setOrderFilters}
-  statusOptions={[
-    { value: "invoiced", label: "Faturado" },
-    { value: "canceled", label: "Cancelado" }
-  ]}
+  onChange={setOrderFilters}
+  showStatus={true}
+  showGroupBy={true}
+  utmSources={["google", "facebook", "instagram"]}
+/>
+
+// Dashboard de clientes sem filtros extras
+<FiltersBar 
+  filters={clientFilters}
+  onChange={setClientFilters}
+  showStatus={false}
 />
 ```
+
+**Filtro de Agrupamento Temporal:**
+Permite alternar entre visualização diária, semanal ou mensal dos dados. O padrão é "dia".
+
+**Filtro por UTM Source:**
+Quando `utmSources` é fornecido, exibe botões clicáveis para filtrar os dados por fonte de tráfego específica. Útil para análise de campanhas.
 
 ### 7. SectionHeader.jsx
 

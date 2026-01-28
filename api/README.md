@@ -32,6 +32,8 @@ Accept: application/json
 | status | String | Status de pedidos (separados por vírgula) | Todos |
 | limit | Integer | Limite de resultados | 20 |
 | sort | String | Ordenação (quantity ou revenue) | revenue |
+| groupBy | String | Agrupamento temporal (day, week, month) | day |
+| utmSource | String | Filtrar por UTM source específico | - |
 
 ## Endpoints
 
@@ -108,18 +110,26 @@ GET /metrics/summary?start=2024-01-01&end=2024-01-31&status=invoiced
 
 ### Série Temporal de Pedidos
 
-Retorna série diária de pedidos e receita.
+Retorna série temporal de pedidos e receita com agrupamento configurável.
 
 **Request:**
 ```http
-GET /metrics/orders?start=2024-01-01&end=2024-01-31
+GET /metrics/orders?start=2024-01-01&end=2024-01-31&groupBy=day&utmSource=google
 ```
 
-**Response:**
+**Query Parameters:**
+- `start` (opcional): Data inicial
+- `end` (opcional): Data final
+- `status` (opcional): Lista de status separados por vírgula
+- `groupBy` (opcional): Agrupamento temporal - `day` (padrão), `week` ou `month`
+- `utmSource` (opcional): Filtrar por UTM source específico
+
+**Response (groupBy=day):**
 ```json
 {
   "start": "2024-01-01",
   "end": "2024-01-31",
+  "groupBy": "day",
   "series": [
     {
       "day": "2024-01-01",
@@ -135,13 +145,54 @@ GET /metrics/orders?start=2024-01-01&end=2024-01-31
 }
 ```
 
+**Response (groupBy=week):**
+```json
+{
+  "start": "2024-01-01",
+  "end": "2024-01-31",
+  "groupBy": "week",
+  "series": [
+    {
+      "week": "2024-01-01",
+      "orders": 85,
+      "revenue": 2456700
+    },
+    {
+      "week": "2024-01-08",
+      "orders": 92,
+      "revenue": 2678400
+    }
+  ]
+}
+```
+
+**Response (groupBy=month):**
+```json
+{
+  "start": "2024-01-01",
+  "end": "2024-01-31",
+  "groupBy": "month",
+  "series": [
+    {
+      "month": "2024-01-01",
+      "orders": 350,
+      "revenue": 10234500
+    }
+  ]
+}
+```
+
 **Campos:**
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| day | String | Data no formato YYYY-MM-DD |
-| orders | Integer | Total de pedidos no dia |
-| revenue | Integer | Receita do dia em centavos |
+| day/week/month | String | Data no formato YYYY-MM-DD (início do período) |
+| orders | Integer | Total de pedidos no período |
+| revenue | Integer | Receita do período em centavos |
+| groupBy | String | Tipo de agrupamento aplicado |
+
+**Nota sobre UTM Source:**
+Quando `utmSource` é especificado, apenas pedidos com aquele UTM source serão incluídos na série temporal, permitindo análise focada de campanhas específicas.
 
 ---
 

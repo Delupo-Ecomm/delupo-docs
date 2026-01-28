@@ -85,10 +85,9 @@ delupo-dash/
 │   ├── api/
 │   ├── testing/
 │   └── deployment/
-├── delupo/
-│   ├── delupo-backend/        # API e serviços backend
-│   └── delupo-frontend/       # Interface web
-└── maxitintas/                # Projeto similar (outra marca)
+└── delupo/
+    ├── delupo-backend/        # API e serviços backend
+    └── delupo-frontend/       # Interface web
 ```
 
 ## Quick Start
@@ -221,6 +220,8 @@ npm run lint     # Verificar código
 ### ✅ Implementadas
 
 - Dashboard de pedidos com série temporal
+- **Agrupamento temporal configurável** (dia, semana, mês)
+- **Filtro por UTM source** com interface clicável
 - Métricas de receita e ticket médio
 - Top produtos por receita/quantidade
 - Top clientes
